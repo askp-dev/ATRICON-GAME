@@ -1,0 +1,20 @@
+{
+  "name": "atricon-game-show",
+  "version": "1.0.0",
+  "description": "Software to run the ATRICON game show",
+  "license": "MIT",
+  "author": "ask the storyteller, the atriarchy",
+  "type": "module",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "firebase": "^12.6.0",
+    "nodemon": "^3.1.11",
+    "obs-websocket-js": "^5.0.6"
+  },
+  "devDependencies": {
+    "prettier": "^3.6.2"
+  }
+}

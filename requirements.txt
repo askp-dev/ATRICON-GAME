@@ -1,0 +1,3 @@
+tmi.js
+toad-scheduler
+obs-websocket-js

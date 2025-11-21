@@ -1,0 +1,120 @@
+html,
+body,
+pre,
+code,
+kbd,
+samp {
+  font-family: "Press Start 2P", cursive;
+}
+
+html,
+body {
+  background-image: url("./9259344.jpg");
+  background-size: cover;
+}
+
+.nes-progress {
+  margin: 0;
+}
+
+.scores {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  right: 0px;
+  gap: 20px;
+}
+
+.categories {
+  position: absolute;
+  top: 20px;
+  width: 95%;
+  left: 0;
+  right: 0;
+  margin: auto;
+  gap: 20px;
+}
+
+i.pfp {
+  left: 25%;
+  animation: mymove 2s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+.baaa {
+  height: 18vh;
+}
+
+.baaa .nes-container {
+  height: 100%;
+}
+
+.answers {
+  position: absolute;
+  top: 30vh;
+  width: 50%;
+  left: 2.5%;
+  right: 2.5%;
+  height: 40vh;
+  gap: 15px;
+}
+
+.nes-container.selected {
+  background-color: rgb(255, 255, 255);
+}
+
+.logo {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 40%;
+  margin: auto;
+  height: 10vh;
+  right: 2.5%;
+}
+
+.logo img {
+  max-width: 100%;
+}
+
+.selected {
+  background: #f07e25;
+  color: white;
+  font-weight: bold;
+}
+
+.loading {
+  z-index: 10000;
+  position: absolute;
+  top: 72vh;
+}
+
+@keyframes mymove {
+  from {
+    left: 50%;
+  }
+  to {
+    left: -20%;
+  }
+}
+
+.first {
+  background-color: gold;
+  text-align: center;
+}
+
+.second {
+  background-color: silver;
+  text-align: center;
+}
+
+.third {
+  background-color: #cd7f32;
+  text-align: center;
+}
+
+.fourth {
+  background-color: #c0c0c0;
+  text-align: center;
+}

@@ -1,0 +1,572 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <link
+      href="https://fonts.googleapis.com/css?family=Press+Start+2P"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://unpkg.com/nes.css/css/nes.css" rel="stylesheet" />
+    <meta charset="utf-8" />
+    <title>ATRICON Game Show</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="app">
+      <progress
+        v-if="loading"
+        class="nes-progress is-pattern loading"
+        :value="progress"
+        max="60"
+      ></progress>
+
+      <!-- ! Categories Box -->
+
+      <div class="container px-4 py-4">
+        <div class="nes-container with-title is-centered categories">
+          <p class="title">CATEGORIES</p>
+          <div
+            class="flex width-full items-center justify-center flex-direction-row baaa"
+          >
+            <div
+              @click="categorySelect(0)"
+              class="nes-container is-rounded is-dark justify-center basis-full"
+            >
+              <div class="flex flex-col items-center h-full w-full">
+                <div class="h-full w-full flex items-center justify-center">
+                  <h3>{{categories[0]}}</h3>
+                </div>
+
+                <div class="h-full w-full flex items-end justify-end">
+                  <progress
+                    class="nes-progress"
+                    :value="4 - categoriesUsed[0]"
+                    max="4"
+                  ></progress>
+                </div>
+              </div>
+            </div>
+            <div
+              @click="categorySelect(1)"
+              class="nes-container is-rounded is-dark justify-center basis-full"
+            >
+              <div
+                class="flex flex-col justify-center items-center h-full w-full"
+              >
+                <div class="h-full w-full flex items-center justify-center">
+                  <h3>
+                    <span class="nes-text is-primary">{{categories[1]}}</span>
+                  </h3>
+                </div>
+
+                <div class="h-full w-full flex items-end justify-end">
+                  <progress
+                    class="nes-progress is-primary"
+                    :value="4 - categoriesUsed[1]"
+                    max="4"
+                  ></progress>
+                </div>
+              </div>
+            </div>
+            <div
+              class="nes-container is-rounded is-dark justify-center basis-full"
+            >
+              <div
+                @click="categorySelect(2)"
+                class="flex flex-col justify-center items-center h-full w-full"
+              >
+                <div class="h-full w-full flex items-center justify-center">
+                  <h3>
+                    <span class="nes-text is-success">{{categories[2]}}</span>
+                  </h3>
+                </div>
+
+                <div class="h-full w-full flex items-end justify-end">
+                  <progress
+                    class="nes-progress is-success"
+                    :value="4 - categoriesUsed[2]"
+                    max="4"
+                  ></progress>
+                </div>
+              </div>
+            </div>
+            <div
+              @click="categorySelect(3)"
+              class="nes-container is-rounded is-dark justify-center basis-full"
+            >
+              <div
+                class="flex flex-col justify-center items-center h-full w-full"
+              >
+                <div class="h-full w-full flex items-center justify-center">
+                  <div class="">
+                    <h3>
+                      <span class="nes-text is-warning">{{categories[3]}}</span>
+                    </h3>
+                  </div>
+                </div>
+
+                <div class="h-full w-full flex items-end justify-end">
+                  <progress
+                    class="nes-progress is-warning"
+                    :value="4 - categoriesUsed[3]"
+                    max="4"
+                  ></progress>
+                </div>
+              </div>
+            </div>
+            <div
+              class="nes-container is-rounded is-dark justify-center basis-full"
+            >
+              <div
+                class="flex flex-col justify-center items-center h-full w-full"
+              >
+                <div class="h-full w-full flex items-center justify-center">
+                  <h3>
+                    <span class="nes-text is-error">{{categories[4]}}</span>
+                  </h3>
+                </div>
+
+                <div class="h-full w-full flex items-end justify-end">
+                  <progress
+                    class="nes-progress is-error"
+                    :value="4 - categoriesUsed[4]"
+                    max="4"
+                  ></progress>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ! Question Box -->
+      <div
+        v-if="stage === 'question'"
+        class="answers flex flex-col items-center justify-center nes-container bg-white"
+      >
+        <div class="nes-container is-rounded is-dark w-full text-center">
+          <p>{{currentQuestion.q}}</p>
+        </div>
+
+        <div class="flex w-full flex-row">
+          <div class="nes-container basis-full text-center mx-2">
+            <p>1. {{currentQuestion.a1}}</p>
+          </div>
+
+          <div class="nes-container basis-full text-center mx-2">
+            <p>2. {{currentQuestion.a2}}</p>
+          </div>
+        </div>
+
+        <div class="flex w-full flex-row">
+          <div class="nes-container basis-full text-center mx-2">
+            <p>3. {{currentQuestion.a3}}</p>
+          </div>
+          <div class="nes-container basis-full text-center mx-2">
+            <p>4. {{currentQuestion.a4}}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ! Answers Box -->
+      <div
+        v-if="stage === 'results'"
+        class="answers flex flex-col items-center justify-center"
+      >
+        <div class="nes-container is-rounded is-dark w-full text-center">
+          <p>{{currentQuestion.q}}</p>
+        </div>
+
+        <div
+          v-for="(r,i) in qscores"
+          class="nes-container is-rounded w-full"
+          v-bind:class="ranks[i]"
+        >
+          <span>{{ranks[i]}}</span> |
+          <span class="is-warning">
+            {{currentQuestion["a" + r]}} | {{results[r - 1]}} Votes
+          </span>
+        </div>
+      </div>
+
+      <!-- ! Rules Box -->
+      <div
+        v-if="stage === 'rules'"
+        class="answers flex flex-col items-center justify-center nes-container bg-white"
+      >
+        <div class="nes-container is-rounded is-dark">
+          <h3>How well do you know your chat?</h3>
+
+          <ul class="nes-list is-circle">
+            <li>- You will take turns picking a category.</li>
+            <li>
+              - Each choice will reveal a question from that category that will
+              be polled on Atrioc's Twitch chat.
+            </li>
+            <li>
+              - During this time you will have 1 minute to write down what you
+              think will be the most popular answer.
+            </li>
+            <li>
+              - Once the minute is up, the poll will close and the answers will
+              be revealed here, and points will be awarded accordingly.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ! Waiting Box -->
+      <div
+        v-if="stage === 'waiting'"
+        class="answers flex flex-col items-center justify-center nes-container is-dark"
+      >
+        <div class="nes-container is-rounded is-dark">
+          <h2 class="nes-text">Pick the next question...</h2>
+        </div>
+      </div>
+
+      <!-- ! PEOPLE Box -->
+      <div
+        class="logo flex width-full items-center justify-center flex-direction-row"
+      >
+        <div class="nes-container is-rounded is-dark justify-center">
+          <div class="flex flex-col justify-center items-center">
+            <div>
+              <h3>
+                <span class="nes-text is-disabled">SCORE</span>
+                {{scores.atrioc}}
+              </h3>
+            </div>
+
+            <div>
+              <a href="#" class="nes-badge">
+                <span class="is-warning">ATRIOC</span>
+              </a>
+            </div>
+
+            <div>
+              <button
+                @click="scoreChange('atrioc', 3000)"
+                type="button"
+                class="nes-btn is-success"
+              >
+                First Place
+              </button>
+            </div>
+
+            <div>
+              <button
+                @click="scoreChange('atrioc', 2000)"
+                type="button"
+                class="nes-btn is-warning"
+              >
+                Second Place
+              </button>
+            </div>
+
+            <div>
+              <button
+                @click="scoreChange('atrioc', 1000)"
+                type="button"
+                class="nes-btn is-primary"
+              >
+                Third Place
+              </button>
+            </div>
+
+            <div>
+              <button
+                @click="scoreChange('atrioc', 0)"
+                type="button"
+                class="nes-btn is-error"
+              >
+                STUPID BUTTON
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="nes-container is-rounded is-dark justify-center">
+          <div class="flex flex-col justify-center items-center">
+            <div>
+              <h3>
+                <span class="nes-text is-disabled">SCORE</span> {{scores.aiden}}
+              </h3>
+            </div>
+
+            <div>
+              <a href="#" class="nes-badge">
+                <span class="is-error">AIDEN</span>
+              </a>
+            </div>
+            <div>
+              <button
+                @click="scoreChange('aiden', 3000)"
+                type="button"
+                class="nes-btn is-success"
+              >
+                First Place
+              </button>
+            </div>
+
+            <div>
+              <button
+                @click="scoreChange('aiden', 2000)"
+                type="button"
+                class="nes-btn is-warning"
+              >
+                Second Place
+              </button>
+            </div>
+
+            <div>
+              <button
+                @click="scoreChange('aiden', 1000)"
+                type="button"
+                class="nes-btn is-primary"
+              >
+                Third Place
+              </button>
+            </div>
+
+            <div>
+              <button
+                @click="scoreChange('aiden', 0)"
+                type="button"
+                class="nes-btn is-error"
+              >
+                STUPID BUTTON
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="nes-container is-rounded is-dark justify-center">
+          <div class="flex flex-col justify-center items-center">
+            <div>
+              <h3>
+                <span class="nes-text is-disabled">SCORE</span> {{scores.doug}}
+              </h3>
+            </div>
+
+            <div>
+              <a href="#" class="nes-badge">
+                <span class="is-primary">DOUGDOUG</span>
+              </a>
+            </div>
+            <div>
+              <button
+                @click="scoreChange('doug', 3000)"
+                type="button"
+                class="nes-btn is-success"
+              >
+                First Place
+              </button>
+            </div>
+
+            <div>
+              <button
+                @click="scoreChange('doug', 2000)"
+                type="button"
+                class="nes-btn is-warning"
+              >
+                Second Place
+              </button>
+            </div>
+
+            <div>
+              <button
+                @click="scoreChange('doug', 1000)"
+                type="button"
+                class="nes-btn is-primary"
+              >
+                Third Place
+              </button>
+            </div>
+
+            <div>
+              <button
+                @click="scoreChange('doug', 0)"
+                type="button"
+                class="nes-btn is-error"
+              >
+                STUPID BUTTON
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="scores flex width-full items-center justify-center flex-direction-col"
+      >
+        <div class="nes-container is-rounded is-dark justify-center">
+          <button @click="moveStage('rules')" type="button" class="nes-btn">
+            Show Rules
+          </button>
+          <button @click="moveStage('waiting')" type="button" class="nes-btn">
+            Move On To Next Question
+          </button>
+          <button @click="moveStage('results')" type="button" class="nes-btn">
+            Reveal Results
+          </button>
+        </div>
+      </div>
+    </div>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        onValue,
+        get,
+        child,
+        set,
+      } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-database.js";
+
+      import { createApp } from "https://unpkg.com/vue@3/dist/vue.esm-browser.js";
+      const firebaseConfig = {
+        apiKey: "AIzaSyD22CwWlOfU0B54r8XBKFTy218rIM69qJw",
+        authDomain: "atricon-423b8.firebaseapp.com",
+        projectId: "atricon-423b8",
+        storageBucket: "atricon-423b8.firebasestorage.app",
+        messagingSenderId: "1029798779250",
+        appId: "1:1029798779250:web:d944154ac6fe6b26cc25eb",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const database = getDatabase(app);
+
+      function sortWithIndices(arr) {
+        let toSort = arr;
+        for (var i = 0; i < toSort.length; i++) {
+          toSort[i] = [toSort[i], i];
+        }
+        toSort.sort(function (left, right) {
+          return left[0] < right[0] ? -1 : 1;
+        });
+        toSort.sortIndices = [];
+        for (var j = 0; j < toSort.length; j++) {
+          toSort.sortIndices.push(toSort[j][1]);
+          toSort[j] = toSort[j][0];
+        }
+        return toSort;
+      }
+      createApp({
+        data() {
+          return {
+            ranks: ["first", "second", "third", "fourth"],
+            classes: ["is-primary", "is-secondary", "is-success", "is-warning"],
+            loading: false,
+            progress: 0,
+            scores: {},
+            stage: "question",
+            currentQuestion: {},
+            questions: {},
+            categories: [],
+            categoriesUsed: [0, 0, 0, 0, 0],
+            qscores: null,
+            results: null,
+          };
+        },
+        methods: {
+          scoreChange(player, points) {
+            let playerRef = ref(database, "scores/" + player);
+            const currentScore = this.scores[player];
+            const newScore =
+              currentScore + points + Math.floor(Math.random() * 1000);
+            set(playerRef, newScore);
+          },
+          categorySelect(index) {
+            if (this.loading) return;
+            if (this.stage !== "waiting") return;
+            let category = this.categories[index];
+            let questionsInCategory = this.questions[category];
+            let usedCount = this.categoriesUsed[index];
+
+            if (usedCount >= 4) {
+              alert("All questions in this category have been used!");
+              return;
+            }
+
+            let question = questionsInCategory[usedCount];
+
+            let currentQuestionRef = ref(database, "currentQuestion");
+            set(currentQuestionRef, question);
+
+            let categoriesUsedRef = ref(database, "categoriesUsed/" + index);
+            set(categoriesUsedRef, usedCount + 1);
+
+            let statusRef = ref(database, "status");
+            set(statusRef, {
+              loading: true,
+              stage: "question",
+              results: null,
+            });
+          },
+          moveStage: (newStage) => {
+            console.log(newStage);
+            let statusRef = ref(database, "status/stage");
+            set(statusRef, newStage);
+          },
+        },
+        mounted() {
+          let questionsRef = ref(database, "qs");
+          get(questionsRef).then((snapshot) => {
+            const data = snapshot.val();
+            let grouped_data = Object.groupBy(data, ({ c }) => c);
+            this.questions = grouped_data;
+            this.categories = Object.keys(grouped_data);
+          });
+
+          let scoresRef = ref(database, "scores");
+          onValue(scoresRef, (snapshot) => {
+            const data = snapshot.val();
+            this.scores = data;
+          });
+
+          let statusRef = ref(database, "status");
+          onValue(statusRef, (snapshot) => {
+            const data = snapshot.val();
+            this.loading = data.loading;
+            this.stage = data.stage;
+            this.results = data.results ?? null;
+            let rawresults = data.results ?? null;
+            if (rawresults) {
+              let sortedResults = sortWithIndices(rawresults);
+
+              this.qscores = sortedResults.sortIndices.slice(0, 4);
+
+              console.log(this.results);
+              console.log(this.qscores);
+            }
+          });
+
+          let interval = setInterval(() => {
+            if (!this.loading) return;
+            if (this.progress < 60) {
+              this.progress += 1;
+            } else {
+              this.stage = "results";
+              this.progress = 0;
+            }
+          }, 1000);
+
+          let currentCategoriesChanged = ref(database, "categoriesUsed");
+          onValue(currentCategoriesChanged, (snapshot) => {
+            const data = snapshot.val();
+            this.categoriesUsed = data;
+          });
+
+          let currentQuestionRef = ref(database, "currentQuestion");
+          onValue(currentQuestionRef, (snapshot) => {
+            const data = snapshot.val();
+            this.currentQuestion = data;
+          });
+        },
+      }).mount("#app");
+    </script>
+  </body>
+</html>
