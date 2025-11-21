@@ -60,7 +60,7 @@ client.on("message", (channel, tags, message, self) => {
   if (!open) return; // Ignore messages if not open for answers
 
   const username = `${tags["display-name"]}`;
-  // if (responded.has(username)) return;
+  if (responded.has(username)) return; // Ignore if user has already responded
   responded.add(username);
 
   const i = validate(message);
