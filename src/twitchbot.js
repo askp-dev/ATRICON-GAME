@@ -15,7 +15,7 @@ const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
 const client = new tmi.Client({
-  channels: ["theatriarchy"],
+  channels: ["atrioc"],
 });
 let open = false;
 let results = { 1: 0, 2: 0, 3: 0, 4: 0 };

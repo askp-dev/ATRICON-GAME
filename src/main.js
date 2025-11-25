@@ -1,10 +1,10 @@
 import { ToadScheduler, SimpleIntervalJob, Task } from "toad-scheduler";
 
+import process from "process";
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, onValue, set } from "firebase/database";
 const firebaseConfig = {
-  apiKey: "AIzaSyD22CwWlOfU0B54r8XBKFTy218rIM69qJw",
-
+  apiKey: process.env.FIREBASE_API_KEY,
   authDomain: "atricon-423b8.firebaseapp.com",
 
   databaseURL: "https://atricon-423b8-default-rtdb.firebaseio.com",

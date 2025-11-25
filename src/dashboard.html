@@ -11,7 +11,7 @@
     <title>ATRICON Game Show</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="./assets/css/styles.css" />
   </head>
   <body>
     <div id="app">
@@ -31,6 +31,7 @@
             class="flex width-full items-center justify-center flex-direction-row baaa"
           >
             <div
+              @click="categorySelect(0)"
               class="nes-container is-rounded is-dark justify-center basis-full"
             >
               <div class="flex flex-col items-center h-full w-full">
@@ -48,6 +49,7 @@
               </div>
             </div>
             <div
+              @click="categorySelect(1)"
               class="nes-container is-rounded is-dark justify-center basis-full"
             >
               <div
@@ -72,6 +74,7 @@
               class="nes-container is-rounded is-dark justify-center basis-full"
             >
               <div
+                @click="categorySelect(2)"
                 class="flex flex-col justify-center items-center h-full w-full"
               >
                 <div class="h-full w-full flex items-center justify-center">
@@ -90,6 +93,7 @@
               </div>
             </div>
             <div
+              @click="categorySelect(3)"
               class="nes-container is-rounded is-dark justify-center basis-full"
             >
               <div
@@ -113,6 +117,7 @@
               </div>
             </div>
             <div
+              @click="categorySelect(4)"
               class="nes-container is-rounded is-dark justify-center basis-full"
             >
               <div
@@ -166,6 +171,27 @@
         </div>
       </div>
 
+      <!-- ! Answers Box -->
+      <div
+        v-if="stage === 'results'"
+        class="answers flex flex-col items-center justify-center"
+      >
+        <div class="nes-container is-rounded is-dark w-full text-center">
+          <p>{{currentQuestion.q}}</p>
+        </div>
+
+        <div
+          v-for="(r,i) in qscores"
+          class="nes-container is-rounded w-full"
+          v-bind:class="ranks[i]"
+        >
+          <span>{{ranks[i]}}</span> |
+          <span class="is-warning">
+            {{currentQuestion["a" + (r + 1)]}} | {{results[r]}} Votes
+          </span>
+        </div>
+      </div>
+
       <!-- ! Rules Box -->
       <div
         v-if="stage === 'rules'"
@@ -191,26 +217,7 @@
           </ul>
         </div>
       </div>
-      <!-- ! Answers Box -->
-      <div
-        v-if="stage === 'results'"
-        class="answers flex flex-col items-center justify-center"
-      >
-        <div class="nes-container is-rounded is-dark w-full text-center">
-          <p>{{currentQuestion.q}}</p>
-        </div>
 
-        <div
-          v-for="(r,i) in qscores"
-          class="nes-container is-rounded w-full"
-          v-bind:class="ranks[i]"
-        >
-          <span>{{ranks[i]}}</span> |
-          <span class="is-warning">
-            {{currentQuestion["a" + (r + 1)]}} | {{results[r]}} Votes
-          </span>
-        </div>
-      </div>
       <!-- ! Waiting Box -->
       <div
         v-if="stage === 'waiting'"
@@ -221,18 +228,13 @@
         </div>
       </div>
 
-      <div class="logo">
-        <img src="LOGO.svg" alt="Game Show Logo" />
-      </div>
-
+      <!-- ! PEOPLE Box -->
       <div
-        class="scores flex width-full items-center justify-center flex-direction-row"
+        class="logo flex width-full items-center justify-center flex-direction-row"
       >
         <div class="nes-container is-rounded is-dark justify-center">
           <div class="flex flex-col justify-center items-center">
             <div>
-              <i class="pfp nes-kirby" aria-hidden="true"></i>
-
               <h3>
                 <span class="nes-text is-disabled">SCORE</span>
                 {{scores.atrioc}}
@@ -244,14 +246,52 @@
                 <span class="is-warning">ATRIOC</span>
               </a>
             </div>
+
+            <div>
+              <button
+                @click="scoreChange('atrioc', 3000)"
+                type="button"
+                class="nes-btn is-success"
+              >
+                First Place
+              </button>
+            </div>
+
+            <div>
+              <button
+                @click="scoreChange('atrioc', 2000)"
+                type="button"
+                class="nes-btn is-warning"
+              >
+                Second Place
+              </button>
+            </div>
+
+            <div>
+              <button
+                @click="scoreChange('atrioc', 1000)"
+                type="button"
+                class="nes-btn is-primary"
+              >
+                Third Place
+              </button>
+            </div>
+
+            <div>
+              <button
+                @click="scoreChange('atrioc', 0)"
+                type="button"
+                class="nes-btn is-error"
+              >
+                STUPID BUTTON
+              </button>
+            </div>
           </div>
         </div>
 
         <div class="nes-container is-rounded is-dark justify-center">
           <div class="flex flex-col justify-center items-center">
             <div>
-              <i class="nes-mario pfp" aria-hidden="true"></i>
-
               <h3>
                 <span class="nes-text is-disabled">SCORE</span> {{scores.aiden}}
               </h3>
@@ -262,14 +302,51 @@
                 <span class="is-error">AIDEN</span>
               </a>
             </div>
+            <div>
+              <button
+                @click="scoreChange('aiden', 3000)"
+                type="button"
+                class="nes-btn is-success"
+              >
+                First Place
+              </button>
+            </div>
+
+            <div>
+              <button
+                @click="scoreChange('aiden', 2000)"
+                type="button"
+                class="nes-btn is-warning"
+              >
+                Second Place
+              </button>
+            </div>
+
+            <div>
+              <button
+                @click="scoreChange('aiden', 1000)"
+                type="button"
+                class="nes-btn is-primary"
+              >
+                Third Place
+              </button>
+            </div>
+
+            <div>
+              <button
+                @click="scoreChange('aiden', 0)"
+                type="button"
+                class="nes-btn is-error"
+              >
+                STUPID BUTTON
+              </button>
+            </div>
           </div>
         </div>
 
         <div class="nes-container is-rounded is-dark justify-center">
           <div class="flex flex-col justify-center items-center">
             <div>
-              <i class="nes-ash pfp" aria-hidden="true"></i>
-
               <h3>
                 <span class="nes-text is-disabled">SCORE</span> {{scores.doug}}
               </h3>
@@ -280,7 +357,62 @@
                 <span class="is-primary">DOUGDOUG</span>
               </a>
             </div>
+            <div>
+              <button
+                @click="scoreChange('doug', 3000)"
+                type="button"
+                class="nes-btn is-success"
+              >
+                First Place
+              </button>
+            </div>
+
+            <div>
+              <button
+                @click="scoreChange('doug', 2000)"
+                type="button"
+                class="nes-btn is-warning"
+              >
+                Second Place
+              </button>
+            </div>
+
+            <div>
+              <button
+                @click="scoreChange('doug', 1000)"
+                type="button"
+                class="nes-btn is-primary"
+              >
+                Third Place
+              </button>
+            </div>
+
+            <div>
+              <button
+                @click="scoreChange('doug', 0)"
+                type="button"
+                class="nes-btn is-error"
+              >
+                STUPID BUTTON
+              </button>
+            </div>
           </div>
+        </div>
+      </div>
+
+      <div
+        class="scores flex width-full items-center justify-center flex-direction-col"
+      >
+        <div class="nes-container is-rounded is-dark justify-center">
+          <button @click="moveStage('rules')" type="button" class="nes-btn">
+            Show Rules
+          </button>
+          <button @click="moveStage('waiting')" type="button" class="nes-btn">
+            Move On To Next Question
+          </button>
+          <button @click="moveStage('results')" type="button" class="nes-btn">
+            Reveal Results
+          </button>
         </div>
       </div>
     </div>
@@ -292,6 +424,7 @@
         onValue,
         get,
         child,
+        set,
       } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-database.js";
 
       import { createApp } from "https://unpkg.com/vue@3/dist/vue.esm-browser.js";
@@ -338,6 +471,45 @@
             results: null,
           };
         },
+        methods: {
+          scoreChange(player, points) {
+            let playerRef = ref(database, "scores/" + player);
+            const currentScore = this.scores[player];
+            const newScore =
+              currentScore + points + Math.floor(Math.random() * 1000);
+            set(playerRef, newScore);
+          },
+          categorySelect(index) {
+            let category = this.categories[index];
+            let questionsInCategory = this.questions[category];
+            let usedCount = this.categoriesUsed[index];
+
+            if (usedCount >= 4) {
+              alert("All questions in this category have been used!");
+              return;
+            }
+
+            let question = questionsInCategory[usedCount];
+
+            let currentQuestionRef = ref(database, "currentQuestion");
+            set(currentQuestionRef, question);
+
+            let categoriesUsedRef = ref(database, "categoriesUsed/" + index);
+            set(categoriesUsedRef, usedCount + 1);
+
+            let statusRef = ref(database, "status");
+            set(statusRef, {
+              loading: true,
+              stage: "question",
+              results: null,
+            });
+          },
+          moveStage: (newStage) => {
+            console.log(newStage);
+            let statusRef = ref(database, "status/stage");
+            set(statusRef, newStage);
+          },
+        },
         mounted() {
           let questionsRef = ref(database, "qs");
           get(questionsRef).then((snapshot) => {
@@ -366,7 +538,6 @@
               this.qscores = sortedResults.sortIndices;
 
               console.log(this.results);
-
               console.log(this.qscores);
             }
           });
@@ -376,6 +547,7 @@
             if (this.progress < 60) {
               this.progress += 1;
             } else {
+              this.stage = "results";
               this.progress = 0;
             }
           }, 1000);
@@ -396,5 +568,3 @@
     </script>
   </body>
 </html>
-
-<!-- TODO: SHOW FINAL RESULTS ONCE READY -->
