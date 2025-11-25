@@ -1,4 +1,5 @@
 import tmi from "tmi.js";
+import config from "./config.json" assert { type: "json" };
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, onValue, set } from "firebase/database";
 const firebaseConfig = {
@@ -15,8 +16,9 @@ const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
 const client = new tmi.Client({
-  channels: ["atrioc"],
+  channels: [config.settings.twitchChannel],
 });
+
 let open = false;
 let results = { 1: 0, 2: 0, 3: 0, 4: 0 };
 let responded = new Set();
@@ -55,6 +57,7 @@ const sortResults = (obj) => {
     .map((e) => e.key)
     .join("");
 };
+
 client.on("message", (channel, tags, message, self) => {
   if (self) return; // Ignore messages from the bot itself
   if (!open) return; // Ignore messages if not open for answers

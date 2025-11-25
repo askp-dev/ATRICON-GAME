@@ -1,9 +1,7 @@
-html,
-body,
-pre,
-code,
-kbd,
-samp {
+@import url("pressStart2PFont.css");
+@import url("nes.css");
+
+* {
   font-family: "Press Start 2P", cursive;
 }
 
@@ -11,10 +9,6 @@ html,
 body {
   background-image: url("../media/9259344.jpg");
   background-size: cover;
-}
-
-.nes-progress {
-  margin: 0;
 }
 
 .scores {
@@ -37,17 +31,10 @@ body {
 
 i.pfp {
   left: 25%;
-  animation: mymove 2s;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
 }
 
-.baaa {
+.categories-content {
   height: 18vh;
-}
-
-.baaa .nes-container {
-  height: 100%;
 }
 
 .answers {
@@ -60,10 +47,6 @@ i.pfp {
   gap: 15px;
 }
 
-.nes-container.selected {
-  background-color: rgb(255, 255, 255);
-}
-
 .logo {
   position: absolute;
   top: 0;
@@ -74,47 +57,24 @@ i.pfp {
   right: 2.5%;
 }
 
-.logo img {
-  max-width: 100%;
-}
-
-.selected {
-  background: #f07e25;
-  color: white;
-  font-weight: bold;
-}
-
 .loading {
   z-index: 10000;
   position: absolute;
   top: 72vh;
 }
 
-@keyframes mymove {
-  from {
-    left: 50%;
-  }
-  to {
-    left: -20%;
-  }
-}
-
 .first {
   background-color: gold;
-  text-align: center;
 }
 
 .second {
   background-color: silver;
-  text-align: center;
 }
 
 .third {
   background-color: #cd7f32;
-  text-align: center;
 }
 
 .fourth {
   background-color: #c0c0c0;
-  text-align: center;
 }

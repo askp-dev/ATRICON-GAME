@@ -1,17 +1,12 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <link
-      href="https://fonts.googleapis.com/css?family=Press+Start+2P"
-      rel="stylesheet"
-    />
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link href="https://unpkg.com/nes.css/css/nes.css" rel="stylesheet" />
-    <meta charset="utf-8" />
-    <title>ATRICON Game Show</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
+    <meta charset="utf-8" />
+    <title>Parasocializers</title>
+    <link rel="icon" type="image/svg+xml" href="./assets/media/favicon.ico" />
     <link rel="stylesheet" href="./assets/css/styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   </head>
   <body>
     <div id="app">
@@ -28,11 +23,11 @@
         <div class="nes-container with-title is-centered categories">
           <p class="title">CATEGORIES</p>
           <div
-            class="flex width-full items-center justify-center flex-direction-row baaa"
+            class="flex width-full items-center justify-center flex-direction-row categories-content"
           >
             <div
               @click="categorySelect(0)"
-              class="nes-container is-rounded is-dark justify-center basis-full"
+              class="nes-container is-rounded is-dark justify-center basis-full h-full"
             >
               <div class="flex flex-col items-center h-full w-full">
                 <div class="h-full w-full flex items-center justify-center">
@@ -50,7 +45,7 @@
             </div>
             <div
               @click="categorySelect(1)"
-              class="nes-container is-rounded is-dark justify-center basis-full"
+              class="nes-container is-rounded is-dark justify-center basis-full h-full"
             >
               <div
                 class="flex flex-col justify-center items-center h-full w-full"
@@ -71,7 +66,7 @@
               </div>
             </div>
             <div
-              class="nes-container is-rounded is-dark justify-center basis-full"
+              class="nes-container is-rounded is-dark justify-center basis-full h-full"
             >
               <div
                 @click="categorySelect(2)"
@@ -94,7 +89,7 @@
             </div>
             <div
               @click="categorySelect(3)"
-              class="nes-container is-rounded is-dark justify-center basis-full"
+              class="nes-container is-rounded is-dark justify-center basis-full h-full"
             >
               <div
                 class="flex flex-col justify-center items-center h-full w-full"
@@ -118,7 +113,7 @@
             </div>
             <div
               @click="categorySelect(4)"
-              class="nes-container is-rounded is-dark justify-center basis-full"
+              class="nes-container is-rounded is-dark justify-center basis-full h-full"
             >
               <div
                 class="flex flex-col justify-center items-center h-full w-full"
@@ -182,7 +177,7 @@
 
         <div
           v-for="(r,i) in qscores"
-          class="nes-container is-rounded w-full"
+          class="nes-container is-rounded w-full text-center"
           v-bind:class="ranks[i]"
         >
           <span>{{ranks[i]}}</span> |
