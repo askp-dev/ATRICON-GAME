@@ -27,103 +27,24 @@
             class="flex width-full items-center justify-center flex-direction-row categories-content"
           >
             <div
+              v-for="(c,i) in categories"
+              @click="categorySelect(i)"
               class="nes-container is-rounded is-dark justify-center basis-full h-full"
             >
               <div class="flex flex-col items-center h-full w-full">
                 <div class="h-full w-full flex items-center justify-center">
-                  <h3>{{categories[0]}}</h3>
+                  <h3>
+                    <span class="nes-text" :class="classes[i]"
+                      >{{categories[i]}}</span
+                    >
+                  </h3>
                 </div>
 
                 <div class="h-full w-full flex items-end justify-end">
                   <progress
                     class="nes-progress"
-                    :value="4 - categoriesUsed[0]"
-                    max="4"
-                  ></progress>
-                </div>
-              </div>
-            </div>
-            <div
-              class="nes-container is-rounded is-dark justify-center basis-full h-full"
-            >
-              <div
-                class="flex flex-col justify-center items-center h-full w-full"
-              >
-                <div class="h-full w-full flex items-center justify-center">
-                  <h3>
-                    <span class="nes-text is-primary">{{categories[1]}}</span>
-                  </h3>
-                </div>
-
-                <div class="h-full w-full flex items-end justify-end">
-                  <progress
-                    class="nes-progress is-primary"
-                    :value="4 - categoriesUsed[1]"
-                    max="4"
-                  ></progress>
-                </div>
-              </div>
-            </div>
-            <div
-              class="nes-container is-rounded is-dark justify-center basis-full h-full"
-            >
-              <div
-                class="flex flex-col justify-center items-center h-full w-full"
-              >
-                <div class="h-full w-full flex items-center justify-center">
-                  <h3>
-                    <span class="nes-text is-success">{{categories[2]}}</span>
-                  </h3>
-                </div>
-
-                <div class="h-full w-full flex items-end justify-end">
-                  <progress
-                    class="nes-progress is-success"
-                    :value="4 - categoriesUsed[2]"
-                    max="4"
-                  ></progress>
-                </div>
-              </div>
-            </div>
-            <div
-              class="nes-container is-rounded is-dark justify-center basis-full h-full"
-            >
-              <div
-                class="flex flex-col justify-center items-center h-full w-full"
-              >
-                <div class="h-full w-full flex items-center justify-center">
-                  <div class="">
-                    <h3>
-                      <span class="nes-text is-warning">{{categories[3]}}</span>
-                    </h3>
-                  </div>
-                </div>
-
-                <div class="h-full w-full flex items-end justify-end">
-                  <progress
-                    class="nes-progress is-warning"
-                    :value="4 - categoriesUsed[3]"
-                    max="4"
-                  ></progress>
-                </div>
-              </div>
-            </div>
-            <div
-              class="nes-container is-rounded is-dark justify-center basis-full h-full"
-            >
-              <div
-                class="flex flex-col justify-center items-center h-full w-full"
-              >
-                <div class="h-full w-full flex items-center justify-center">
-                  <h3>
-                    <span class="nes-text is-error">{{categories[4]}}</span>
-                  </h3>
-                </div>
-
-                <div class="h-full w-full flex items-end justify-end">
-                  <progress
-                    class="nes-progress is-error"
-                    :value="4 - categoriesUsed[4]"
+                    :class="classes[i]"
+                    :value="4 - categoriesUsed[i]"
                     max="4"
                   ></progress>
                 </div>
@@ -187,6 +108,7 @@
           </ul>
         </div>
       </div>
+
       <!-- ! Answers Box -->
       <div
         v-if="stage === 'results'"
@@ -207,6 +129,7 @@
           </span>
         </div>
       </div>
+
       <!-- ! Waiting Box -->
       <div
         v-if="stage === 'waiting'"
@@ -284,20 +207,24 @@
         </div>
       </div>
     </div>
+    <script type="importmap">
+      {
+        "imports": {
+          "vue": "https://unpkg.com/vue@3/dist/vue.esm-browser.js",
+          "firebase/app": "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js",
+          "firebase/database": "https://www.gstatic.com/firebasejs/12.6.0/firebase-database.js"
+        }
+      }
+    </script>
     <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
-      import {
-        getDatabase,
-        ref,
-        onValue,
-        get,
-        child,
-      } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-database.js";
+      import { initializeApp } from "firebase/app";
+      import { getDatabase, ref, onValue, get, child } from "firebase/database";
+      import { createApp } from "vue";
 
-      import { createApp } from "https://unpkg.com/vue@3/dist/vue.esm-browser.js";
       const firebaseConfig = {
         apiKey: "AIzaSyD22CwWlOfU0B54r8XBKFTy218rIM69qJw",
         authDomain: "atricon-423b8.firebaseapp.com",
+        databaseURL: "https://atricon-423b8-default-rtdb.firebaseio.com",
         projectId: "atricon-423b8",
         storageBucket: "atricon-423b8.firebasestorage.app",
         messagingSenderId: "1029798779250",
@@ -325,7 +252,13 @@
         data() {
           return {
             ranks: ["first", "second", "third", "fourth"],
-            classes: ["is-primary", "is-secondary", "is-success", "is-warning"],
+            classes: [
+              "is-secondary",
+              "is-primary",
+              "is-success",
+              "is-warning",
+              "is-error",
+            ],
             loading: false,
             progress: 0,
             scores: {},
@@ -338,6 +271,7 @@
             results: null,
           };
         },
+
         mounted() {
           let questionsRef = ref(database, "qs");
           get(questionsRef).then((snapshot) => {
